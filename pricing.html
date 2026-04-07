@@ -15,20 +15,20 @@
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="logo">
+  <nav class="navbar flex flex-wrap items-center justify-between px-4 py-3 md:px-8 md:py-4">
+    <div class="logo order-1">
       <i class='bx bx-hive'></i>
       <span><strong>AI Saree</strong> Studio</span>
     </div>
-    <ul class="nav-links">
+    <ul class="nav-links w-full md:w-auto mt-4 md:mt-0 flex justify-center flex-wrap gap-4 md:gap-8 order-3 md:order-2">
       <li><a href="index.html">Home</a></li>
       <li><a href="tools.html">Tools <i class='bx bx-chevron-down'></i></a></li>
       <li><a href="pricing.html" class="active">Pricing</a></li>
       <li><a href="#">About</a></li>
     </ul>
-    <div class="user-profile" id="userProfileBtn">
+    <div class="user-profile order-2 md:order-3" id="userProfileBtn">
       <div class="avatar"><i class='bx bx-user'></i></div>
-      <div class="user-info">
+      <div class="user-info hidden sm:flex flex-col">
         <span class="name">Sign In</span>
         <span class="credits">1 free credit</span>
       </div>
@@ -315,15 +315,15 @@
   <!-- Footer Section -->
   <div class="w-full font-sans">
     <!-- 1. CTA Banner Section -->
-    <div class="bg-[#EA580C] py-16 px-4 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+    <div class="bg-[#EA580C] py-12 md:py-16 px-4 text-center">
+      <h2 class="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">
         Ready to Create Stunning Saree Images?
       </h2>
-      <p class="text-orange-100 text-lg mb-8">
+      <p class="text-orange-100 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
         Start generating beautiful AI-powered saree designs today.
       </p>
       <a href="tools.html"
-        class="bg-white text-[#EA580C] font-bold py-3 px-8 rounded-xl inline-flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors shadow-lg">
+        class="bg-white text-[#EA580C] font-bold py-3 px-6 md:px-8 rounded-xl inline-flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors shadow-lg">
         Try It Now
         <i class="bx bx-right-arrow-alt text-xl"></i>
       </a>
