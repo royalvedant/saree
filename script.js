@@ -23,40 +23,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
 
-    uploadArea.addEventListener('click', () => {
-        fileInput.click();
-    });
+    if (uploadArea && fileInput) {
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
 
-    uploadArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadArea.style.borderColor = 'var(--primary)';
-        uploadArea.style.backgroundColor = '#fffaf5';
-    });
-
-    uploadArea.addEventListener('dragleave', () => {
-        uploadArea.style.borderColor = '#d1d5db';
-        uploadArea.style.backgroundColor = '#f9fafb';
-    });
-
-    uploadArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadArea.style.borderColor = '#d1d5db';
-        uploadArea.style.backgroundColor = '#f9fafb';
-        if (e.dataTransfer.files.length > 0) {
-            handleFile(e.dataTransfer.files[0]);
-        }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            handleFile(e.target.files[0]);
-        }
-    });
-
-    function handleFile(file) {
-        if (file && file.type.startsWith('image/')) {
-            uploadArea.innerHTML = `<i class='bx bx-check-circle' style='color: var(--primary);'></i><p>${file.name}</p><span>Ready to analyze</span>`;
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
             uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.backgroundColor = '#fffaf5';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#d1d5db';
+            uploadArea.style.backgroundColor = '#f9fafb';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#d1d5db';
+            uploadArea.style.backgroundColor = '#f9fafb';
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                uploadArea.innerHTML = `<i class='bx bx-check-circle' style='color: var(--primary);'></i><p>${file.name}</p><span>Ready to analyze</span>`;
+                uploadArea.style.borderColor = 'var(--primary)';
+            }
         }
     }
 
@@ -100,67 +102,80 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Tab Switching
-    const tabs = document.querySelectorAll('#sareeTabs .tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // Swap out the Saree style cards based on the tab
-            const targetId = tab.getAttribute('data-target');
-            if (targetId) {
-                document.querySelectorAll('#sareeStylesContainer .style-cards').forEach(container => {
-                    container.style.display = 'none';
-                });
-                document.getElementById(targetId).style.display = 'grid';
-            }
+    const sareeTabsContainer = document.getElementById('sareeTabs');
+    if (sareeTabsContainer) {
+        const tabs = sareeTabsContainer.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Swap out the Saree style cards based on the tab
+                const targetId = tab.getAttribute('data-target');
+                if (targetId) {
+                    document.querySelectorAll('#sareeStylesContainer .style-cards').forEach(container => {
+                        container.style.display = 'none';
+                    });
+                    document.getElementById(targetId).style.display = 'grid';
+                }
+            });
         });
-    });
+    }
 
 
     // --- Generate Button Logic ---
     const generateBtn = document.getElementById('generateBtn');
-    const previewArea = document.getElementById('previewArea');
-    const creditsEl = document.querySelector('.credits');
-    const bannerAmountEl = document.querySelector('.banner-text .amount');
+    if (generateBtn) {
+        const previewArea = document.getElementById('previewArea');
+        const creditsEl = document.querySelector('.credits');
+        const bannerAmountEl = document.querySelector('.banner-text .amount');
 
-    generateBtn.addEventListener('click', () => {
-        // UI feedback for generating
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' ></i> Generating...";
-        
-        // Show loading state in preview
-        previewArea.innerHTML = `
-            <div class="loading">
-                <div class="spinner"></div>
-                <p style="color: var(--text-muted); font-weight: 500;">AI is crafting your saree design...</p>
-            </div>
-        `;
-
-        // Simulate API call delay (3 seconds)
-        setTimeout(() => {
-            // "Deduct" credit visually
-            creditsEl.innerText = "0 credits";
-            bannerAmountEl.innerText = "0 credits";
-            bannerAmountEl.style.color = "var(--text-muted)";
-
-            // Show result
-            // Placeholer image for result since asset might not exist
-            const resultUrl = "https://images.unsplash.com/photo-1610189044275-5202868ff178?q=80&w=800&auto=format&fit=crop"; 
+        generateBtn.addEventListener('click', () => {
+            // UI feedback for generating
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' ></i> Generating...";
             
+            // Show loading state in preview
             previewArea.innerHTML = `
-                <img src="${resultUrl}" alt="Generated Saree" class="result-image">
-                <div style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.5rem;">
-                    <i class='bx bx-check-circle' style='color: var(--primary)'></i> Generation Complete
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="color: var(--text-muted); font-weight: 500;">AI is crafting your saree design...</p>
                 </div>
             `;
 
-            // Reset button
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = "<i class='bx bx-sparkles'></i> Generate New Art";
-            
-            // Re-apply hover effect dynamically by removing and adding class if needed, or it just works via CSS.
-        }, 3000);
+            // Simulate API call delay (3 seconds)
+            setTimeout(() => {
+                // "Deduct" credit visually
+                if (creditsEl) creditsEl.innerText = "0 credits";
+                if (bannerAmountEl) {
+                    bannerAmountEl.innerText = "0 credits";
+                    bannerAmountEl.style.color = "var(--text-muted)";
+                }
+
+                // Show result
+                const resultUrl = "https://images.unsplash.com/photo-1610189044275-5202868ff178?q=80&w=800&auto=format&fit=crop"; 
+                
+                previewArea.innerHTML = `
+                    <img src="${resultUrl}" alt="Generated Saree" class="result-image">
+                    <div style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.5rem;">
+                        <i class='bx bx-check-circle' style='color: var(--primary)'></i> Generation Complete
+                    </div>
+                `;
+
+                // Reset button
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = "<i class='bx bx-sparkles'></i> Generate New Art";
+            }, 3000);
+        });
+    }
+
+    // --- Purchase Button Logic (Pricing Page) ---
+    const purchaseButtons = document.querySelectorAll('.purchase-btn');
+    purchaseButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentModal = document.getElementById('signInModal');
+            if (currentModal) currentModal.classList.add('active');
+        });
     });
 
     // --- Modal Logic ---
