@@ -28,7 +28,13 @@ body {
     background-color: var(--bg-main);
     color: var(--text-dark);
     line-height: 1.5;
-    padding-top: 72px; /* Accommodate fixed navbar */
+    padding-top: 130px; /* Accommodate wrapped navbar on mobile */
+}
+
+@media (min-width: 768px) {
+    body {
+        padding-top: 72px; /* Accommodate fixed navbar on desktop */
+    }
 }
 
 /* Navbar */
