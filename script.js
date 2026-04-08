@@ -171,9 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Purchase Button Logic (Pricing Page) ---
     const handlePayment = async (plan) => {
-      // 1. Create order on your Netlify backend function
+      // 1. Create order on your Netlify backend function (via API rewrite)
       try {
-          const response = await fetch('/.netlify/functions/create-order', {
+          const response = await fetch('/api/create-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: plan.price * 100, planName: plan.title }) // Convert to paise
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             order_id: order.id,
             handler: async function (response) {
               // 3. Send response to backend for verification
-              const verifyRes = await fetch('/.netlify/functions/verify-payment', {
+              const verifyRes = await fetch('/api/verify-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
