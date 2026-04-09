@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return {
                 file: new File([blob], `${safeName || 'saree'}.png`, { type: blob.type || 'image/png' }),
                 previewSrc: imageSrc,
+                altText: selectedStyleCard.getAttribute('alt') || '',
             };
         }
 
@@ -223,13 +224,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (elapsedMs < minDelayMs) {
                     await new Promise((resolve) => setTimeout(resolve, minDelayMs - elapsedMs));
                 }
-                
-                previewArea.innerHTML = `
-                    <img src="${resultUrl}" alt="Generated Saree" class="result-image">
-                    <div style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.5rem;">
-                        <i class='bx bx-check-circle' style='color: var(--primary)'></i> Generation Complete
-                    </div>
-                `;
+
+                const styleVideoMap = {
+                    'Banarasi Silk': 'static/banarasi-silk-preview.mov',
+                    'Chanderi': 'static/chanderi-preview.mov',
+                    'Maheshwari': 'static/maheshwari-preview.mov',
+                    'Kanchipuram': 'static/kanchipuram-preview.mov',
+                    'Mysore Silk': 'static/mysoresilk-preview.mov',
+                    'Pattu': 'static/pattu-preview.mov',
+                    'Patola': 'static/patola-preview.mov',
+                    'Bandhani': 'static/bandhani-preview.mov',
+                    'Kota Doria': 'static/kotadoria-preview.mov',
+                    'Tant': 'static/tant-preview.mov',
+                    'Baluchari': 'static/baluchari-preview.mov',
+                    'Jamdani': 'static/jamdani-preview.mov',
+                };
+                const selectedVideo = styleVideoMap[selectedSaree.altText];
+
+                if (selectedVideo) {
+                    previewArea.innerHTML = `
+                        <video src="${selectedVideo}" class="result-image" autoplay muted loop playsinline controls></video>
+                        <div style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class='bx bx-play-circle' style='color: var(--primary)'></i> Video Preview
+                        </div>
+                    `;
+                    const previewVideo = previewArea.querySelector('video');
+                    if (previewVideo) {
+                        previewVideo.play().catch(() => {});
+                    }
+                } else {
+                    previewArea.innerHTML = `
+                        <img src="${resultUrl}" alt="Generated Saree" class="result-image">
+                        <div style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class='bx bx-check-circle' style='color: var(--primary)'></i> Generation Complete
+                        </div>
+                    `;
+                }
             } catch (error) {
                 const isTimeout = error && error.name === 'AbortError';
                 previewArea.innerHTML = `
